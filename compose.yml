@@ -1,0 +1,25 @@
+services:
+
+  python:
+    build:
+      context: ./src/
+    container_name: iteen-python
+    entrypoint: ["pip", "freeze"]
+    env_file:
+      - .env
+    hostname: python
+    image: alexandersidorov/iteen-python:latest
+    init: true
+    networks:
+      - iteen
+    restart: no
+    tmpfs:
+      - /mnt/tmpfs/:mode=777,size=100m,uid=9999,gid=9999
+    tty: true
+    volumes:
+      - ./.local/shared/:/mnt/shared/:rw
+
+networks:
+  iteen:
+    name: iteen
+    driver: bridge

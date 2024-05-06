@@ -1,0 +1,8 @@
+cmake
+g++
+gnupg
+libffi-dev
+libpq-dev
+locales
+python3-dev
+rustc

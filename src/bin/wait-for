@@ -1,0 +1,26 @@
+#!/bin/sh
+
+host=$1
+port=$2
+timeout=$3
+
+if [ -z "${host}" ] || [ -z "${port}" ] || [ -z "${timeout}" ]; then
+    echo "👉 Usage: $0 <host> <port> <timeout-seconds>\n";
+    exit 1;
+fi
+
+echo "\n🔌 Waiting for $host:$port"
+
+attempt=1
+
+while [ "${attempt}" -le "${timeout}" ]; do
+    echo " * ping ${attempt} ..."
+    if nc -z "${host}" "${port}"; then
+        echo "✅ ${host}:${port} is listening!\n"
+        exit 0;
+    fi
+    attempt=$((attempt + 1))
+    sleep 1;
+done
+
+echo "❌ ${host}:${port} is not available after ${timeout} seconds.\n"
