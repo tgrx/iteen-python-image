@@ -7,15 +7,11 @@ tasks:
   deploy:
     cmds:
       - >
-        docker buildx create
-        --name builder-multi-platform
-        --bootstrap
-        --use
-      - >
         docker buildx build
+        --builder local-multi-platform
         --platform linux/amd64,linux/arm64
-        --tag alexandersidorov/iteen-python:latest
         --push
+        --tag alexandersidorov/iteen-python:latest
         ./src/
     desc: build all platforms and push to Docker Hub
     dir: "{{.ROOT_DIR}}"

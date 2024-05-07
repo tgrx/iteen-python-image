@@ -26,6 +26,8 @@ ARG GID=9999
 ARG UID=9999
 ARG USERNAME=iteen
 
+ARG DIR_HOME=/home/${USERNAME}
+
 # This directory is used for packaging of this image.
 ARG DIR_PACKAGE=/opt/iteen/
 
@@ -51,13 +53,15 @@ RUN set -eux; \
     && \
     adduser \
         --disabled-password \
-        --home=${DIR_SERVICE} \
+        --home=${DIR_HOME} \
         --ingroup=${USERNAME} \
         --shell=/bin/bash \
         --uid=${UID} \
         ${USERNAME} \
     && \
     install -o ${USERNAME} -m 0755 -d ${DIR_TMPFS} \
+    && \
+    install -o ${USERNAME} -m 0755 -d ${DIR_SERVICE} \
     && \
     echo "User has been installed successfully."
 
@@ -163,6 +167,10 @@ RUN set -eux; \
         ${DIR_POETRY_CACHE} \
     && \
     echo "System left-overs have been cleaned up."
+
+# copy the rest to the package dir
+
+COPY ./dependencies/Taskfile.yml ./dependencies/.flake8 ./
 
 USER ${USERNAME}
 

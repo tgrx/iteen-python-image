@@ -1,8 +1,86 @@
+[tool.black]
+cache-dir = "/mnt/tmpfs/black/"
+line-length = 79
+target-version = ["py311"]
+include = '^.+\.pyi?$'
+
+
+[tool.isort]
+force_single_line = true
+line_length = 79
+multi_line_output = 3
+profile = "black"
+
+
+[tool.mypy]
+cache_dir = "/mnt/tmpfs/mypy/"
+check_untyped_defs = true
+disallow_incomplete_defs = true
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+exclude = [ "migrations/", ]
+no_implicit_optional = true
+plugins = ["pydantic.mypy", "sqlalchemy.ext.mypy.plugin"]
+pretty = true
+python_version = "3.11"
+show_error_context = true
+sqlite_cache = true
+warn_redundant_casts = true
+warn_return_any = true
+warn_unused_configs = true
+warn_unused_ignores = true
+
+[[tool.mypy.overrides]]
+ignore_missing_imports = true
+module = [
+    "apscheduler.*",
+    "pyodbc.*",
+]
+
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = true
+warn_required_dynamic_aliases = true
+warn_untyped_fields = true
+
+
+[tool.pytest.ini_options]
+addopts = "--cov --cov-branch"
+cache_dir = "/mnt/tmpfs/pytest/"
+console_output_style = "count"
+
+
+[tool.coverage.run]
+parallel = true
+branch = true
+source = ["."]
+
+
+[tool.coverage.report]
+exclude_lines = [
+    # a more strict default pragma
+    "\\# pragma: no cover\\b",
+
+    # allow defensive code
+    "^\\s*raise AssertionError\\b",
+    "^\\s*raise NotImplementedError\\b",
+    "^\\s*return NotImplemented\\b",
+    "^\\s*raise$",
+
+    # typing-related code
+    "^if (False|TYPE_CHECKING):",
+    ": \\.\\.\\.(\\s*#.*)?$",
+    "^ +\\.\\.\\.$",
+    "-> ['\"]?NoReturn['\"]?:",
+]
+
+
 [tool.poetry]
 name = "iteen-python"
 version = "1.0.0"
 description = "Base Python distribution for ITeen Projects"
-authors = ["Alexander Sidorov <a375296648709@gmail.com>"]
+authors = ["Alexander Sidorov <alexander@sidorov.dev>"]
 license = "MIT"
 readme = "README.md"
 
